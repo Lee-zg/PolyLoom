@@ -1,0 +1,56 @@
+name: 发布 npm 包
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  id-token: write
+  pull-requests: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    environment: npm
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 安装 pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.9.0
+
+      - name: 安装 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+
+      - name: 安装依赖
+        run: pnpm install --frozen-lockfile
+
+      - name: 验证发布内容
+        run: |
+          pnpm lint
+          pnpm typecheck
+          pnpm test
+          pnpm validate:packages
+
+      - name: 创建版本 PR 或发布
+        uses: changesets/action@v1
+        with:
+          publish: pnpm release
+          title: 发布新版本
+          commit: 发布新版本
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # npm 侧必须为每个包配置本工作流为 Trusted Publisher；此流程不读取 NPM_TOKEN。

@@ -1,0 +1,15 @@
+node_modules/
+dist/
+coverage/
+.astro/
+.vite/
+.cache/
+.tmp/
+playwright-report/
+test-results/
+*.tgz
+*.log
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json

@@ -1,0 +1,35 @@
+@layer polyloom.tokens {
+  :root,
+  [data-pl-theme='light'] {
+    color-scheme: light;
+    --pl-color-background: #f4f0e7;
+    --pl-color-surface: #fffdf7;
+    --pl-color-foreground: #1b1a17;
+    --pl-color-muted: #6d685e;
+    --pl-color-border: #aaa397;
+    --pl-color-accent: #c77816;
+    --pl-color-focus: #b56600;
+    --pl-color-primary: #1b1a17;
+    --pl-color-primary-hover: #34312a;
+    --pl-color-on-primary: #fffdf7;
+    --pl-shadow-control: 0 1px 0 rgb(27 26 23 / 18%), 0 4px 14px rgb(27 26 23 / 8%);
+    --pl-radius-control: 0.25rem;
+    --pl-font-control: 'IBM Plex Sans', 'Noto Sans SC', 'Source Han Sans SC', sans-serif;
+    --pl-duration-fast: 140ms;
+  }
+
+  [data-pl-theme='dark'] {
+    color-scheme: dark;
+    --pl-color-background: #12120f;
+    --pl-color-surface: #1c1b17;
+    --pl-color-foreground: #f1eadf;
+    --pl-color-muted: #aaa294;
+    --pl-color-border: #625d53;
+    --pl-color-accent: #e3a34a;
+    --pl-color-focus: #ffc46b;
+    --pl-color-primary: #e8dfd0;
+    --pl-color-primary-hover: #fff8eb;
+    --pl-color-on-primary: #191713;
+    --pl-shadow-control: 0 1px 0 rgb(0 0 0 / 50%), 0 5px 18px rgb(0 0 0 / 24%);
+  }
+}

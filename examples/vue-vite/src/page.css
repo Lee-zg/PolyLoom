@@ -1,0 +1,42 @@
+:root {
+  font-family: 'IBM Plex Sans', 'Noto Sans SC', sans-serif;
+  color: var(--pl-color-foreground);
+  background: var(--pl-color-background);
+}
+
+body {
+  min-width: 20rem;
+  min-height: 100vh;
+  margin: 0;
+}
+
+.demo-shell {
+  width: min(48rem, calc(100% - 3rem));
+  margin: 0 auto;
+  padding: 16vh 0 4rem;
+}
+
+.demo-kicker {
+  color: var(--pl-color-accent);
+  font: 700 0.75rem/1.4 monospace;
+  letter-spacing: 0.16em;
+}
+
+h1 {
+  max-width: 12ch;
+  margin: 1rem 0;
+  font-size: clamp(2.6rem, 8vw, 6rem);
+  line-height: 0.94;
+  letter-spacing: -0.06em;
+}
+
+.demo-copy {
+  color: var(--pl-color-muted);
+}
+
+.demo-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}

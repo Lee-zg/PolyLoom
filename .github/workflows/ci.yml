@@ -1,0 +1,129 @@
+name: 持续集成
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: 静态检查与单元测试
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 安装 pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.9.0
+
+      - name: 安装 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: 安装依赖
+        run: pnpm install --frozen-lockfile
+
+      - name: 校验源码登记
+        run: pnpm validate:exports
+
+      - name: 代码规范
+        run: pnpm lint
+
+      - name: 类型检查
+        run: pnpm typecheck
+
+      - name: 单元测试
+        run: pnpm test
+
+      - name: 构建与发布包校验
+        run: pnpm validate:packages
+
+      - name: 校验构建后导出
+        run: pnpm validate:exports
+
+      - name: 构建消费示例
+        run: pnpm build:examples
+
+      - name: 构建文档
+        run: pnpm docs:build
+
+  browser:
+    name: 浏览器测试（${{ matrix.browser }}）
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: ${{ fromJSON(github.ref == 'refs/heads/main' && '["chromium","firefox","webkit"]' || '["chromium"]') }}
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 安装 pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.9.0
+
+      - name: 安装 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: 安装依赖
+        run: pnpm install --frozen-lockfile
+
+      - name: 构建发布包
+        run: pnpm build:packages
+
+      - name: 安装浏览器
+        run: pnpm exec playwright install --with-deps ${{ matrix.browser }}
+
+      - name: 运行浏览器测试
+        run: pnpm test:e2e
+        env:
+          PLAYWRIGHT_BROWSER: ${{ matrix.browser }}
+
+      - name: 上传失败报告
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-${{ matrix.browser }}
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
+
+  tarball:
+    name: npm 产物消费验证
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 安装 pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.9.0
+
+      - name: 安装 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: 安装依赖
+        run: pnpm install --frozen-lockfile
+
+      - name: 构建并验证 tarball
+        run: |
+          pnpm build:packages
+          pnpm test:pack

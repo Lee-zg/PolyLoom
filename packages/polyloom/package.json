@@ -1,0 +1,53 @@
+{
+  "name": "polyloom",
+  "version": "0.1.0",
+  "description": "PolyLoom 多框架 UI 组件与 JavaScript 插件聚合包",
+  "license": "MIT",
+  "type": "module",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./style.css": "./dist/style.css"
+  },
+  "dependencies": {
+    "@polyloom/core": "workspace:^",
+    "@polyloom/plugins": "workspace:^",
+    "@polyloom/react": "workspace:^",
+    "@polyloom/theme": "workspace:^",
+    "@polyloom/vue": "workspace:^"
+  },
+  "peerDependencies": {
+    "react": ">=18.3.0 <20",
+    "react-dom": ">=18.3.0 <20",
+    "vue": ">=3.5.0 <4"
+  },
+  "devDependencies": {
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "vue": "catalog:",
+    "vue-tsc": "catalog:"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "vite build && vue-tsc -p tsconfig.build.json && node ../../tooling/scripts/build-styles.mjs polyloom",
+    "typecheck": "vue-tsc -p tsconfig.json",
+    "validate:package": "node ../../tooling/scripts/validate-package.mjs"
+  }
+}

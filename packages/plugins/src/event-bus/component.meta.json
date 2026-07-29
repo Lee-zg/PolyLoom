@@ -1,0 +1,7 @@
+{
+  "name": "event-bus",
+  "status": "stable",
+  "since": "0.1.0",
+  "origin": "original",
+  "license": "MIT"
+}

@@ -1,0 +1,8 @@
+node_modules
+dist
+coverage
+.astro
+playwright-report
+test-results
+pnpm-lock.yaml
+*.tgz

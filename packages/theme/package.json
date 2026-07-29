@@ -1,0 +1,35 @@
+{
+  "name": "@polyloom/theme",
+  "version": "0.1.0",
+  "description": "PolyLoom 设计令牌与组件样式",
+  "license": "MIT",
+  "type": "module",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./tokens.css": "./dist/tokens.css",
+    "./button.css": "./dist/button.css",
+    "./style.css": "./dist/style.css"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "vite build && tsc -p tsconfig.build.json && node ../../tooling/scripts/build-styles.mjs theme",
+    "typecheck": "tsc -p tsconfig.json",
+    "validate:package": "node ../../tooling/scripts/validate-package.mjs"
+  }
+}

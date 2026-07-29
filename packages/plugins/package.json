@@ -1,0 +1,34 @@
+{
+  "name": "@polyloom/plugins",
+  "version": "0.1.0",
+  "description": "PolyLoom 框架无关的浏览器插件与工具",
+  "license": "MIT",
+  "type": "module",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./event-bus": {
+      "types": "./dist/event-bus/index.d.ts",
+      "import": "./dist/event-bus/index.js"
+    }
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "vite build && tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json",
+    "validate:package": "node ../../tooling/scripts/validate-package.mjs"
+  }
+}

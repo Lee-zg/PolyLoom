@@ -1,0 +1,16 @@
+{
+  "name": "legacy-component",
+  "status": "experimental",
+  "origin": "personal-project",
+  "source": "请填写可公开追溯的来源；不要记录内部仓库地址",
+  "license": "UNKNOWN",
+  "dependencies": [],
+  "checks": {
+    "license": false,
+    "security": false,
+    "ssr": false,
+    "tests": false,
+    "accessibility": false,
+    "docs": false
+  }
+}

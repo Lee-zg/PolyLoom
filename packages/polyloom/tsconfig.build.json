@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
+    "noEmit": false,
+    "outDir": "dist",
+    "paths": {
+      "@polyloom/core": ["../core/dist/index.d.ts"],
+      "@polyloom/plugins": ["../plugins/dist/index.d.ts"],
+      "@polyloom/react": ["../react/dist/index.d.ts"],
+      "@polyloom/theme": ["../theme/dist/index.d.ts"],
+      "@polyloom/vue": ["../vue/dist/index.d.ts"]
+    },
+    "rootDir": "src"
+  }
+}

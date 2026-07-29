@@ -1,0 +1,139 @@
+@layer polyloom.components {
+  .pl-button {
+    --pl-button-height: 2.5rem;
+    --pl-button-padding-inline: 1rem;
+
+    position: relative;
+    display: inline-flex;
+    min-width: max-content;
+    height: var(--pl-button-height);
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    padding: 0 var(--pl-button-padding-inline);
+    overflow: hidden;
+    border: 1px solid transparent;
+    border-radius: var(--pl-radius-control, 0.25rem);
+    font-family: var(--pl-font-control, sans-serif);
+    font-size: 0.875rem;
+    font-weight: 650;
+    line-height: 1;
+    letter-spacing: 0.015em;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: var(--pl-shadow-control);
+    transition:
+      color var(--pl-duration-fast, 140ms) ease,
+      background-color var(--pl-duration-fast, 140ms) ease,
+      border-color var(--pl-duration-fast, 140ms) ease,
+      box-shadow var(--pl-duration-fast, 140ms) ease,
+      transform 80ms ease;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .pl-button::after {
+    position: absolute;
+    inset: 0.2rem;
+    border: 1px solid currentcolor;
+    border-radius: calc(var(--pl-radius-control, 0.25rem) - 0.1rem);
+    content: '';
+    opacity: 0%;
+    pointer-events: none;
+    transition: opacity var(--pl-duration-fast, 140ms) ease;
+  }
+
+  .pl-button:hover:not(:disabled)::after {
+    opacity: 12%;
+  }
+
+  .pl-button:active:not(:disabled) {
+    box-shadow: none;
+    transform: translateY(1px);
+  }
+
+  .pl-button:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--pl-color-focus, #b56600) 52%, transparent);
+    outline-offset: 2px;
+  }
+
+  .pl-button:disabled {
+    cursor: not-allowed;
+    filter: saturate(0.35);
+    opacity: 55%;
+    box-shadow: none;
+  }
+
+  .pl-button--primary {
+    border-color: var(--pl-color-primary, #1b1a17);
+    color: var(--pl-color-on-primary, #fffdf7);
+    background: var(--pl-color-primary, #1b1a17);
+  }
+
+  .pl-button--primary:hover:not(:disabled) {
+    background: var(--pl-color-primary-hover, #34312a);
+  }
+
+  .pl-button--secondary {
+    border-color: var(--pl-color-border, #aaa397);
+    color: var(--pl-color-foreground, #1b1a17);
+    background: var(--pl-color-surface, #fffdf7);
+  }
+
+  .pl-button--secondary:hover:not(:disabled) {
+    border-color: var(--pl-color-accent, #c77816);
+    color: var(--pl-color-accent, #c77816);
+  }
+
+  .pl-button--ghost {
+    border-color: transparent;
+    color: var(--pl-color-foreground, #1b1a17);
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .pl-button--ghost:hover:not(:disabled) {
+    color: var(--pl-color-accent, #c77816);
+    background: color-mix(in srgb, var(--pl-color-accent, #c77816) 9%, transparent);
+  }
+
+  .pl-button--sm {
+    --pl-button-height: 2rem;
+    --pl-button-padding-inline: 0.75rem;
+
+    font-size: 0.75rem;
+  }
+
+  .pl-button--lg {
+    --pl-button-height: 3rem;
+    --pl-button-padding-inline: 1.25rem;
+
+    font-size: 0.9375rem;
+  }
+
+  .pl-button__spinner {
+    width: 0.9em;
+    height: 0.9em;
+    border: 1.5px solid currentcolor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: pl-button-spin 700ms linear infinite;
+  }
+
+  @keyframes pl-button-spin {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pl-button,
+    .pl-button::after {
+      transition: none;
+    }
+
+    .pl-button__spinner {
+      animation-duration: 1400ms;
+    }
+  }
+}

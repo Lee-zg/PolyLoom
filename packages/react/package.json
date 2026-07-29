@@ -1,0 +1,53 @@
+{
+  "name": "@polyloom/react",
+  "version": "0.1.0",
+  "description": "PolyLoom React UI 组件",
+  "license": "MIT",
+  "type": "module",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./button": {
+      "types": "./dist/button/index.d.ts",
+      "import": "./dist/button/index.js"
+    },
+    "./button/style.css": "./dist/button/style.css",
+    "./style.css": "./dist/style.css"
+  },
+  "dependencies": {
+    "@polyloom/core": "workspace:^",
+    "@polyloom/theme": "workspace:^"
+  },
+  "peerDependencies": {
+    "react": ">=18.3.0 <20",
+    "react-dom": ">=18.3.0 <20"
+  },
+  "devDependencies": {
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "vite build && tsc -p tsconfig.build.json && node ../../tooling/scripts/build-styles.mjs react",
+    "typecheck": "tsc -p tsconfig.json",
+    "validate:package": "node ../../tooling/scripts/validate-package.mjs"
+  }
+}

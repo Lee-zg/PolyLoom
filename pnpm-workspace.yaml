@@ -1,0 +1,24 @@
+packages:
+  - apps/*
+  - examples/*
+  - packages/*
+
+allowBuilds:
+  esbuild: true
+  sharp: true
+
+catalog:
+  '@types/react': ^19.2.14
+  '@types/react-dom': ^19.2.3
+  '@vitejs/plugin-react': ^6.0.4
+  '@vitejs/plugin-vue': ^6.0.8
+  '@vue/server-renderer': ^3.5.40
+  react: ^19.2.8
+  react-dom: ^19.2.8
+  typescript: 6.0.3
+  vite: ^8.1.5
+  vue: ^3.5.40
+  vue-tsc: ^3.2.4
+
+# 新版本先经过一天社区验证，降低供应链投毒与误发版本带来的风险。
+minimumReleaseAge: 1440

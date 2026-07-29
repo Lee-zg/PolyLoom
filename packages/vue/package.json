@@ -1,0 +1,51 @@
+{
+  "name": "@polyloom/vue",
+  "version": "0.1.0",
+  "description": "PolyLoom Vue 3 UI 组件",
+  "license": "MIT",
+  "type": "module",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./button": {
+      "types": "./dist/button/index.d.ts",
+      "import": "./dist/button/index.js"
+    },
+    "./button/style.css": "./dist/button/style.css",
+    "./style.css": "./dist/style.css"
+  },
+  "dependencies": {
+    "@polyloom/core": "workspace:^",
+    "@polyloom/theme": "workspace:^"
+  },
+  "peerDependencies": {
+    "vue": ">=3.5.0 <4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "catalog:",
+    "@vue/server-renderer": "catalog:",
+    "vue": "catalog:",
+    "vue-tsc": "catalog:"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "vite build && vue-tsc -p tsconfig.build.json && node ../../tooling/scripts/build-styles.mjs vue",
+    "typecheck": "vue-tsc -p tsconfig.json",
+    "validate:package": "node ../../tooling/scripts/validate-package.mjs"
+  }
+}
