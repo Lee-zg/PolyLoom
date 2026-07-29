@@ -16,6 +16,17 @@ import { Button } from '@polyloom/vue/button';
 import '@polyloom/vue/button/style.css';
 ```
 
+PDF 工作台按同样规则引入：
+
+```bash
+pnpm add @embedpdf/pdfium
+```
+
+```ts
+import { EmbedPdfVue } from '@polyloom/vue/embedpdf-vue';
+import '@polyloom/vue/embedpdf-vue/style.css';
+```
+
 ## React
 
 ```bash

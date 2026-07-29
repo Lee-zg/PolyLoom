@@ -28,11 +28,15 @@ export default defineConfig({
             { label: '设计与安装', slug: 'guides/getting-started' },
             { label: '导入策略', slug: 'guides/imports' },
             { label: '历史代码准入', slug: 'guides/governance' },
+            { label: '发布流程', slug: 'guides/releasing' },
           ],
         },
         {
           label: '组件',
-          items: [{ label: 'Button', slug: 'components/button' }],
+          items: [
+            { label: 'Button', slug: 'components/button' },
+            { label: 'EmbedPdfVue', slug: 'components/embedpdf-vue' },
+          ],
         },
         {
           label: '插件',

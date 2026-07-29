@@ -1,6 +1,6 @@
 {
   "name": "polyloom-workspace",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "description": "PolyLoom 多框架 UI 组件与 JavaScript 插件工作区",
   "license": "MIT",

@@ -103,7 +103,6 @@ jobs:
 
   tarball:
     name: npm 产物消费验证
-    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: 检出代码

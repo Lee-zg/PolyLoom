@@ -1,0 +1,29 @@
+{
+  "name": "embedpdf-vue",
+  "displayName": "EmbedPdfVue",
+  "status": "stable",
+  "since": "0.1.0",
+  "origin": "migrated",
+  "source": {
+    "path": "higher_education/src/components/common/PdfViewer.vue",
+    "commit": "a5ffa46",
+    "blob": "53c56e122b9f879ebfae4ec1190918ea29c4c0ea"
+  },
+  "license": "MIT",
+  "licenseVerified": true,
+  "originalDependencies": [
+    "@embedpdf/core",
+    "@embedpdf/engines",
+    "@embedpdf/models",
+    "@embedpdf/plugin-document-manager",
+    "@embedpdf/plugin-loader",
+    "@embedpdf/plugin-pan",
+    "@embedpdf/plugin-render",
+    "@embedpdf/plugin-scroll",
+    "@embedpdf/plugin-spread",
+    "@embedpdf/plugin-viewport",
+    "@embedpdf/plugin-zoom"
+  ],
+  "dependencies": ["@embedpdf/vue-pdf-viewer@^2.14.4"],
+  "migratedAt": "2026-07-29"
+}

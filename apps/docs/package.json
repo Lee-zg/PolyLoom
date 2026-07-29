@@ -1,6 +1,6 @@
 {
   "name": "@polyloom/docs",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -10,6 +10,7 @@
     "typecheck": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro check"
   },
   "dependencies": {
+    "@embedpdf/pdfium": "^2.14.4",
     "@astrojs/react": "6.0.1",
     "@astrojs/starlight": "^0.41.5",
     "@astrojs/vue": "^7.0.1",

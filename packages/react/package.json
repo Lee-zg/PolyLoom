@@ -2,12 +2,28 @@
   "name": "@polyloom/react",
   "version": "0.1.0",
   "description": "PolyLoom React UI 组件",
+  "keywords": [
+    "polyloom",
+    "react",
+    "typescript",
+    "component-library"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lee-zg/PolyLoom.git",
+    "directory": "packages/react"
+  },
+  "homepage": "https://lee-zg.github.io/PolyLoom/",
+  "bugs": {
+    "url": "https://github.com/Lee-zg/PolyLoom/issues"
+  },
   "license": "MIT",
   "type": "module",
   "files": [
     "dist",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "CHANGELOG.md"
   ],
   "sideEffects": [
     "**/*.css"
@@ -43,7 +59,8 @@
     "node": ">=22.12.0"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "provenance": true
   },
   "scripts": {
     "build": "vite build && tsc -p tsconfig.build.json && node ../../tooling/scripts/build-styles.mjs react",

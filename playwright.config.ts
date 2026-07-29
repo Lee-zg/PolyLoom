@@ -30,6 +30,8 @@ export default defineConfig({
   reporter: process.env.CI ? [['html', { open: 'never' }], ['github']] : 'list',
   retries: process.env.CI ? 2 : 0,
   testDir: './tooling/e2e',
+  // PDFium 初始化对 CPU/内存较敏感；限制 CI 并发可避免“元素持续不稳定”的资源争用假失败。
+  workers: process.env.CI ? 2 : undefined,
   use: {
     baseURL: 'http://127.0.0.1:4321',
     trace: 'on-first-retry',

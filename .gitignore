@@ -5,6 +5,8 @@ coverage/
 .vite/
 .cache/
 .tmp/
+.pnpm-store/
+tmp/
 playwright-report/
 test-results/
 *.tgz
