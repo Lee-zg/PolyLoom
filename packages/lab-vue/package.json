@@ -1,6 +1,6 @@
 {
   "name": "@polyloom/lab-vue",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "description": "尚未满足公开发布标准的 Vue 历史组件",
   "license": "UNLICENSED",

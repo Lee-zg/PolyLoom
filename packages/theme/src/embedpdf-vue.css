@@ -1,0 +1,264 @@
+@layer polyloom.components {
+  .pl-embedpdf-vue {
+    --pl-embedpdf-vue-height: 80vh;
+    --pl-embedpdf-shell: #201f1b;
+    --pl-embedpdf-canvas: #34332f;
+    --pl-embedpdf-line: rgb(255 255 255 / 12%);
+    --pl-embedpdf-amber: var(--pl-color-accent, #c77816);
+
+    display: grid;
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--pl-color-border, #aaa397) 72%, #201f1b);
+    border-radius: calc(var(--pl-radius-control, 0.25rem) * 2);
+    color: #f4eee3;
+    background: var(--pl-embedpdf-shell);
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 8%) inset,
+      0 1.25rem 3rem rgb(27 26 23 / 18%);
+    font-family: var(--pl-font-control, sans-serif);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+  }
+
+  .pl-embedpdf-vue__header,
+  .pl-embedpdf-vue__status {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 0.9rem;
+    border-color: var(--pl-embedpdf-line);
+    background:
+      linear-gradient(90deg, rgb(255 255 255 / 3%), transparent 42%), var(--pl-embedpdf-shell);
+  }
+
+  .pl-embedpdf-vue__header {
+    border-bottom: 1px solid var(--pl-embedpdf-line);
+  }
+
+  .pl-embedpdf-vue__heading,
+  .pl-embedpdf-vue__header-actions,
+  .pl-embedpdf-vue__error-actions {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 0.7rem;
+  }
+
+  .pl-embedpdf-vue__document-mark {
+    padding: 0.24rem 0.38rem;
+    border: 1px solid color-mix(in srgb, var(--pl-embedpdf-amber) 72%, transparent);
+    color: #ffd293;
+    font-family: ui-monospace, 'SFMono-Regular', Consolas, monospace;
+    font-size: 0.64rem;
+    font-weight: 750;
+    letter-spacing: 0.08em;
+    line-height: 1;
+  }
+
+  .pl-embedpdf-vue__title {
+    margin: 0;
+    overflow: hidden;
+    color: #fffaf0;
+    font-size: 0.875rem;
+    font-weight: 640;
+    letter-spacing: 0.01em;
+    line-height: 1.4;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .pl-embedpdf-vue__mode {
+    color: #bdb5a8;
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .pl-embedpdf-vue__external-link,
+  .pl-embedpdf-vue__error-actions a,
+  .pl-embedpdf-vue__error-actions button {
+    border: 0;
+    color: #f4eee3;
+    background: transparent;
+    font: inherit;
+    font-size: 0.75rem;
+    font-weight: 620;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .pl-embedpdf-vue__external-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.32rem;
+    padding: 0.36rem 0.5rem;
+    border: 1px solid var(--pl-embedpdf-line);
+    border-radius: var(--pl-radius-control, 0.25rem);
+  }
+
+  .pl-embedpdf-vue__external-link:hover,
+  .pl-embedpdf-vue__error-actions a:hover,
+  .pl-embedpdf-vue__error-actions button:hover {
+    color: #ffd293;
+  }
+
+  .pl-embedpdf-vue__external-link:focus-visible,
+  .pl-embedpdf-vue__error-actions a:focus-visible,
+  .pl-embedpdf-vue__error-actions button:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--pl-color-focus, #b56600) 58%, transparent);
+    outline-offset: 2px;
+  }
+
+  .pl-embedpdf-vue__viewport {
+    position: relative;
+    min-height: min(28rem, var(--pl-embedpdf-vue-height));
+    height: var(--pl-embedpdf-vue-height);
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 50% 0%, rgb(255 255 255 / 5%), transparent 45%),
+      var(--pl-embedpdf-canvas);
+  }
+
+  .pl-embedpdf-vue__viewer,
+  .pl-embedpdf-vue__iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .pl-embedpdf-vue__loading {
+    position: absolute;
+    z-index: 4;
+    inset: 0;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 0.85rem;
+    color: #d8d0c3;
+    background:
+      linear-gradient(115deg, rgb(27 26 23 / 95%), rgb(52 51 47 / 92%)), var(--pl-embedpdf-canvas);
+    font-size: 0.8rem;
+    letter-spacing: 0.03em;
+  }
+
+  .pl-embedpdf-vue__spinner {
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 2px solid rgb(255 255 255 / 14%);
+    border-top-color: var(--pl-embedpdf-amber);
+    border-radius: 50%;
+    box-shadow: 0 0 1.2rem color-mix(in srgb, var(--pl-embedpdf-amber) 24%, transparent);
+    animation: pl-embedpdf-vue-spin 850ms linear infinite;
+  }
+
+  .pl-embedpdf-vue__error {
+    position: absolute;
+    inset: 1.5rem;
+    display: grid;
+    max-width: 34rem;
+    margin: auto;
+    place-content: center;
+    align-content: center;
+    padding: clamp(1.5rem, 5vw, 3rem);
+    border: 1px solid rgb(255 210 147 / 28%);
+    background: linear-gradient(145deg, rgb(255 255 255 / 5%), transparent 60%), #262520;
+    box-shadow: 0 1rem 3rem rgb(0 0 0 / 24%);
+  }
+
+  .pl-embedpdf-vue__error-code {
+    color: #dda255;
+    font-family: ui-monospace, 'SFMono-Regular', Consolas, monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+  }
+
+  .pl-embedpdf-vue__error h3 {
+    margin: 0.65rem 0 0.4rem;
+    color: #fff8ed;
+    font-size: clamp(1.15rem, 3vw, 1.65rem);
+    font-weight: 620;
+  }
+
+  .pl-embedpdf-vue__error p {
+    max-width: 42ch;
+    margin: 0 0 1.2rem;
+    color: #bdb5a8;
+    font-size: 0.82rem;
+    line-height: 1.7;
+  }
+
+  .pl-embedpdf-vue__error-actions a,
+  .pl-embedpdf-vue__error-actions button {
+    padding: 0.55rem 0.72rem;
+    border: 1px solid rgb(255 255 255 / 16%);
+    border-radius: var(--pl-radius-control, 0.25rem);
+  }
+
+  .pl-embedpdf-vue__error-actions button {
+    color: #221d16;
+    background: #e5a44e;
+  }
+
+  .pl-embedpdf-vue__error-actions button:hover {
+    color: #221d16;
+    background: #f2bd74;
+  }
+
+  .pl-embedpdf-vue__status {
+    justify-content: flex-start;
+    padding-block: 0.48rem;
+    border-top: 1px solid var(--pl-embedpdf-line);
+    color: #a9a196;
+    font-size: 0.68rem;
+    letter-spacing: 0.035em;
+  }
+
+  .pl-embedpdf-vue__status-light {
+    width: 0.42rem;
+    height: 0.42rem;
+    border-radius: 50%;
+    background: var(--pl-embedpdf-amber);
+    box-shadow: 0 0 0.65rem color-mix(in srgb, var(--pl-embedpdf-amber) 62%, transparent);
+  }
+
+  .pl-embedpdf-vue__status-hint {
+    margin-left: auto;
+    color: #817b72;
+    font-family: ui-monospace, 'SFMono-Regular', Consolas, monospace;
+  }
+
+  @keyframes pl-embedpdf-vue-spin {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+
+  @media (max-width: 40rem) {
+    .pl-embedpdf-vue__header {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .pl-embedpdf-vue__header-actions {
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    .pl-embedpdf-vue__viewport {
+      min-height: min(22rem, var(--pl-embedpdf-vue-height));
+    }
+
+    .pl-embedpdf-vue__error {
+      inset: 0.75rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pl-embedpdf-vue__spinner {
+      animation-duration: 1700ms;
+    }
+  }
+}

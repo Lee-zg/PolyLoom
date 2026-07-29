@@ -147,6 +147,15 @@ async function writeConsumer(name, dependencies, source, frameworks) {
   await writeFile(resolve(consumerRoot, 'src/index.ts'), source, 'utf8');
 
   run('pnpm', ['install', '--ignore-scripts'], consumerRoot);
+
+  if (name === 'vue') {
+    for (const unrelatedFramework of ['react', 'react-dom', 'svelte']) {
+      if (existsSync(resolve(consumerRoot, 'node_modules', unrelatedFramework))) {
+        throw new Error(`Vue-only 消费项目不应安装 ${unrelatedFramework}`);
+      }
+    }
+  }
+
   run('pnpm', ['run', 'build'], consumerRoot);
 }
 
@@ -169,6 +178,31 @@ try {
     archiveMap[packageName] = resolve(archiveRoot, archiveName);
   }
 
+  const vueDistRoot = resolve(workspaceRoot, 'packages/vue/dist');
+  const embedPdfEntry = await readFile(resolve(vueDistRoot, 'embedpdf-vue/index.js'), 'utf8');
+  const embedPdfChunks = await Promise.all(
+    (await readdir(vueDistRoot))
+      .filter((fileName) => fileName.startsWith('embedpdf-vue-') && fileName.endsWith('.js'))
+      .map((fileName) => readFile(resolve(vueDistRoot, fileName), 'utf8')),
+  );
+  const embedPdfJavaScript = [embedPdfEntry, ...embedPdfChunks].join('\n');
+  const embedPdfStyle = await readFile(resolve(vueDistRoot, 'embedpdf-vue/style.css'), 'utf8');
+
+  if (!embedPdfJavaScript.includes('import("@embedpdf/vue-pdf-viewer")')) {
+    throw new Error('EmbedPdfVue 产物未保留浏览器阶段的动态导入');
+  }
+  if (embedPdfJavaScript.includes('PlButton') || embedPdfStyle.includes('.pl-button')) {
+    throw new Error('EmbedPdfVue 单组件产物意外包含 Button 或模块全量样式');
+  }
+
+  const reactStyle = await readFile(
+    resolve(workspaceRoot, 'packages/react/dist/style.css'),
+    'utf8',
+  );
+  if (reactStyle.includes('.pl-embedpdf-vue')) {
+    throw new Error('React 模块产物意外包含 Vue 的 EmbedPdfVue 样式');
+  }
+
   await writeConsumer(
     'vue',
     {
@@ -176,7 +210,7 @@ try {
       '@polyloom/theme': archiveMap['@polyloom/theme'],
       '@polyloom/vue': archiveMap['@polyloom/vue'],
     },
-    `import { Button } from '@polyloom/vue/button';\nimport '@polyloom/vue/button/style.css';\nimport { createApp, h } from 'vue';\ncreateApp({ render: () => h(Button, null, () => 'Vue') }).mount('#app');\n`,
+    `import { PolyLoomVue } from '@polyloom/vue';\nimport { Button } from '@polyloom/vue/button';\nimport '@polyloom/vue/button/style.css';\nimport { EmbedPdfVue, type EmbedPdfVueError } from '@polyloom/vue/embedpdf-vue';\nimport '@polyloom/vue/embedpdf-vue/style.css';\nimport { createApp, h } from 'vue';\nconst onPdfError = (error: EmbedPdfVueError) => console.error(error.phase);\nconst app = createApp({ render: () => h('main', [h(Button, null, () => 'Vue'), h(EmbedPdfVue, { src: '/fixture.pdf', onError: onPdfError })]) });\napp.use(PolyLoomVue).mount('#app');\n`,
     ['vue'],
   );
   await writeConsumer(
