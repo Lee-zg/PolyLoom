@@ -4,30 +4,26 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro check && cross-env ASTRO_TELEMETRY_DISABLED=1 astro build",
-    "dev": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro dev",
-    "preview": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro preview",
-    "typecheck": "cross-env ASTRO_TELEMETRY_DISABLED=1 astro check"
+    "build": "vitepress build .",
+    "dev": "vitepress dev .",
+    "preview": "vitepress preview .",
+    "typecheck": "vue-tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
     "@embedpdf/pdfium": "^2.14.4",
-    "@astrojs/react": "6.0.1",
-    "@astrojs/starlight": "^0.41.5",
-    "@astrojs/vue": "^7.0.1",
     "@polyloom/plugins": "workspace:*",
     "@polyloom/react": "workspace:*",
     "@polyloom/theme": "workspace:*",
     "@polyloom/vue": "workspace:*",
-    "astro": "7.1.4",
     "react": "catalog:",
     "react-dom": "catalog:",
     "vue": "catalog:"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.10",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
-    "cross-env": "^10.1.0",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "vitepress": "1.6.4",
+    "vue-tsc": "catalog:"
   }
 }

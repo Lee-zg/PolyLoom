@@ -1,7 +1,7 @@
 node_modules/
 dist/
 coverage/
-.astro/
+.vitepress/cache/
 .vite/
 .cache/
 .tmp/

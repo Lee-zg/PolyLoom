@@ -10,7 +10,7 @@ export default [
       '**/dist/**',
       '**/coverage/**',
       '**/node_modules/**',
-      '**/.astro/**',
+      '**/.vitepress/cache/**',
       '**/playwright-report/**',
       '**/test-results/**',
     ],

@@ -1,6 +1,5 @@
 import { Button } from '@polyloom/react/button';
 import { useEffect, useRef, useState } from 'react';
-import '@polyloom/react/button/style.css';
 
 /** 文档中运行的 React Button 交互示例。 */
 export default function ReactButtonDemo() {

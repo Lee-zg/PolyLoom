@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 检出代码
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: 安装 pnpm
         uses: pnpm/action-setup@v4
@@ -38,7 +38,7 @@ jobs:
           version: 11.9.0
 
       - name: 安装 Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 24
           cache: pnpm
@@ -73,7 +73,7 @@ jobs:
     environment: npm
     steps:
       - name: 检出代码
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -83,7 +83,7 @@ jobs:
           version: 11.9.0
 
       - name: 安装 Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 24
           cache: pnpm
@@ -106,6 +106,39 @@ jobs:
         run: pnpm release
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN_BOOTSTRAP }}
+
+      - name: 验证 registry、README、安装与 provenance
+        shell: bash
+        run: |
+          packages=(
+            '@polyloom/core'
+            '@polyloom/theme'
+            '@polyloom/plugins'
+            '@polyloom/vue'
+            '@polyloom/react'
+            'polyloom'
+          )
+          for package in "${packages[@]}"; do
+            test "$(npm view "$package" version)" = '0.1.0'
+            attestation_url="$(npm view "$package" dist.attestations.url)"
+            if [ -z "$attestation_url" ]; then
+              echo "::error::$package 缺少 npm provenance attestation。"
+              exit 1
+            fi
+            if [ -z "$(npm view "$package" readme)" ]; then
+              echo "::error::$package 缺少 registry README。"
+              exit 1
+            fi
+          done
+          mkdir registry-smoke
+          npm install --prefix registry-smoke --ignore-scripts \
+            @polyloom/core@0.1.0 \
+            @polyloom/theme@0.1.0 \
+            @polyloom/plugins@0.1.0 \
+            @polyloom/vue@0.1.0 \
+            @polyloom/react@0.1.0 \
+            polyloom@0.1.0 \
+            vue@3 react@19 react-dom@19
 
       - name: 建立首版标签
         shell: bash
@@ -144,26 +177,6 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 验证 registry 版本与 provenance
-        shell: bash
-        run: |
-          packages=(
-            '@polyloom/core'
-            '@polyloom/theme'
-            '@polyloom/plugins'
-            '@polyloom/vue'
-            '@polyloom/react'
-            'polyloom'
-          )
-          for package in "${packages[@]}"; do
-            test "$(npm view "$package" version)" = '0.1.0'
-            attestation_url="$(npm view "$package" dist.attestations.url)"
-            if [ -z "$attestation_url" ]; then
-              echo "::error::$package 缺少 npm provenance attestation。"
-              exit 1
-            fi
-          done
-
   trusted-release:
     name: Changesets OIDC 发布
     if: github.event_name == 'push' && vars.NPM_TRUSTED_PUBLISHING_READY == 'true'
@@ -172,7 +185,7 @@ jobs:
     environment: npm
     steps:
       - name: 检出代码
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -182,7 +195,7 @@ jobs:
           version: 11.9.0
 
       - name: 安装 Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 24
           cache: pnpm

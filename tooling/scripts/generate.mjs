@@ -58,7 +58,7 @@ async function generateComponent(framework, name) {
   const displayName = toPascalCase(name);
   const packageRoot = resolve(workspaceRoot, `packages/${framework}`);
   const componentRoot = resolve(packageRoot, `src/${name}`);
-  const docsPath = resolve(workspaceRoot, `apps/docs/src/content/docs/components/${name}.md`);
+  const docsPath = resolve(workspaceRoot, `apps/docs/components/${name}/index.md`);
   const stylePath = resolve(workspaceRoot, `packages/theme/src/${name}.css`);
 
   if (await exists(componentRoot)) {
@@ -119,7 +119,7 @@ async function generateComponent(framework, name) {
     ],
     [
       docsPath,
-      `---\ntitle: ${displayName}\ndescription: 实验阶段组件，API 在首次稳定发布前可能变化。\n---\n\n:::caution[实验入口]\n该组件只从 \`@polyloom/${framework}/experimental/${name}\` 导出，不包含在模块根入口中。\n:::\n`,
+      `---\ntitle: ${displayName}\ndescription: 实验阶段组件，API 在首次稳定发布前可能变化。\n---\n\n# ${displayName}\n\n::: warning 实验入口\n该组件只从 \`@polyloom/${framework}/experimental/${name}\` 导出，不包含在模块根入口中。\n:::\n\n## 示例\n\n待补充可运行示例。\n\n## API\n\n稳定前必须补齐属性、事件、插槽或 children、ref、无障碍、SSR 与故障排查。\n`,
     ],
   ]);
 
@@ -170,8 +170,8 @@ async function generatePlugin(name) {
       )}\n`,
     ],
     [
-      resolve(workspaceRoot, `apps/docs/src/content/docs/plugins/${name}.md`),
-      `---\ntitle: ${displayName}\ndescription: 实验阶段插件，API 在首次稳定发布前可能变化。\n---\n\n从 \`@polyloom/plugins/experimental/${name}\` 导入。\n`,
+      resolve(workspaceRoot, `apps/docs/plugins/${name}/index.md`),
+      `---\ntitle: ${displayName}\ndescription: 实验阶段插件，API 在首次稳定发布前可能变化。\n---\n\n# ${displayName}\n\n::: warning 实验入口\n从 \`@polyloom/plugins/experimental/${name}\` 导入。\n:::\n\n## 示例\n\n待补充类型安全的最小示例。\n\n## API\n\n稳定前必须补齐生命周期、错误传播、SSR、性能与故障排查。\n`,
     ],
   ]);
 

@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 检出代码
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: 安装 pnpm
         uses: pnpm/action-setup@v4
@@ -23,7 +23,7 @@ jobs:
           version: 11.9.0
 
       - name: 安装 Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 24
           cache: pnpm
@@ -64,7 +64,7 @@ jobs:
         browser: ${{ fromJSON(github.ref == 'refs/heads/main' && '["chromium","firefox","webkit"]' || '["chromium"]') }}
     steps:
       - name: 检出代码
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: 安装 pnpm
         uses: pnpm/action-setup@v4
@@ -72,7 +72,7 @@ jobs:
           version: 11.9.0
 
       - name: 安装 Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 24
           cache: pnpm
@@ -89,6 +89,8 @@ jobs:
       - name: 运行浏览器测试
         run: pnpm test:e2e
         env:
+          # E2E 静态服务器挂载在根路径；Pages 的仓库前缀由 docs.yml 单独验证。
+          DOCS_BASE: /
           PLAYWRIGHT_BROWSER: ${{ matrix.browser }}
 
       - name: 上传失败报告
@@ -106,7 +108,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 检出代码
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: 安装 pnpm
         uses: pnpm/action-setup@v4
@@ -114,7 +116,7 @@ jobs:
           version: 11.9.0
 
       - name: 安装 Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 24
           cache: pnpm

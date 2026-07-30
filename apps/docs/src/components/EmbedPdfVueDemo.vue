@@ -3,7 +3,6 @@ import wasmUrl from '@embedpdf/pdfium/pdfium.wasm?url';
 import { EmbedPdfVue, type PreviewType } from '@polyloom/vue/embedpdf-vue';
 import { onMounted, ref } from 'vue';
 import demoPdfUrl from '../assets/polyloom-embedpdf-demo.pdf?url';
-import '@polyloom/vue/embedpdf-vue/style.css';
 
 const hydrated = ref(false);
 const previewType = ref<PreviewType>('default');

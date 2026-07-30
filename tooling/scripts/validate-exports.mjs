@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 const workspaceRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 const failures = [];
+const docsConfig = await readFile(resolve(workspaceRoot, 'apps/docs/.vitepress/config.ts'), 'utf8');
 
 async function pathExists(path) {
   try {
@@ -22,6 +23,35 @@ function requireCondition(condition, message) {
   if (!condition) {
     failures.push(message);
   }
+}
+
+async function validateStableDocumentation({
+  entryName,
+  kind,
+  requiredExample,
+  requiredApiHeading,
+}) {
+  const pagePath = resolve(workspaceRoot, `apps/docs/${kind}/${entryName}/index.md`);
+
+  requireCondition(await pathExists(pagePath), `文档站缺少 ${kind}/${entryName} 的 VitePress 页面`);
+
+  if (!(await pathExists(pagePath))) {
+    return;
+  }
+
+  const pageSource = await readFile(pagePath, 'utf8');
+  requireCondition(
+    pageSource.includes(requiredApiHeading),
+    `${kind}/${entryName} 缺少 API 文档标题 ${requiredApiHeading}`,
+  );
+  requireCondition(
+    pageSource.includes(requiredExample),
+    `${kind}/${entryName} 缺少可运行示例或最小使用示例`,
+  );
+  requireCondition(
+    docsConfig.includes(`/${kind}/${entryName}/`),
+    `${kind}/${entryName} 未登记到 VitePress 侧栏`,
+  );
 }
 
 async function validateFramework(framework) {
@@ -58,20 +88,22 @@ async function validateFramework(framework) {
       await pathExists(resolve(workspaceRoot, `packages/theme/src/${entry.name}.css`)),
       `@polyloom/theme 缺少 ${entry.name}.css`,
     );
-    requireCondition(
-      (await pathExists(
-        resolve(workspaceRoot, `apps/docs/src/content/docs/components/${entry.name}.mdx`),
-      )) ||
-        (await pathExists(
-          resolve(workspaceRoot, `apps/docs/src/content/docs/components/${entry.name}.md`),
-        )),
-      `文档站缺少组件 ${entry.name} 的页面`,
-    );
-
     if (metadata.status === 'stable') {
       requireCondition(
         sourceIndex.includes(entry.name),
         `${packageJson.name} 根入口未导出稳定组件 ${entry.name}`,
+      );
+      await validateStableDocumentation({
+        entryName: entry.name,
+        kind: 'components',
+        requiredApiHeading: entry.name === 'button' ? '## 共有属性' : '## 属性',
+        requiredExample:
+          entry.name === 'embedpdf-vue' ? '<EmbedPdfVueDemo />' : 'data-testid="button-gallery"',
+      });
+    } else {
+      requireCondition(
+        await pathExists(resolve(workspaceRoot, `apps/docs/components/${entry.name}/index.md`)),
+        `文档站缺少实验组件 ${entry.name} 的页面`,
       );
     }
   }
@@ -103,17 +135,21 @@ async function validatePlugins() {
       viteConfig.includes(`'${entry.name}/index'`),
       `${packageJson.name} 的 Vite 多入口未登记 ${entry.name}`,
     );
-    requireCondition(
-      await pathExists(
-        resolve(workspaceRoot, `apps/docs/src/content/docs/plugins/${entry.name}.md`),
-      ),
-      `文档站缺少插件 ${entry.name} 的页面`,
-    );
-
     if (metadata.status === 'stable') {
       requireCondition(
         sourceIndex.includes(entry.name),
         `${packageJson.name} 根入口未导出稳定插件 ${entry.name}`,
+      );
+      await validateStableDocumentation({
+        entryName: entry.name,
+        kind: 'plugins',
+        requiredApiHeading: '## API',
+        requiredExample: `@polyloom/plugins/${entry.name}`,
+      });
+    } else {
+      requireCondition(
+        await pathExists(resolve(workspaceRoot, `apps/docs/plugins/${entry.name}/index.md`)),
+        `文档站缺少实验插件 ${entry.name} 的页面`,
       );
     }
   }

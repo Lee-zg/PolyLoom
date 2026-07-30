@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://lee-zg.github.io/PolyLoom/sitemap.xml
