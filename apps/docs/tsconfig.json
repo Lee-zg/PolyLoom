@@ -1,13 +1,10 @@
 {
-  "extends": "astro/tsconfigs/strict",
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "react",
-    "paths": {
-      "@polyloom/react/button": ["../../packages/react/src/button/index.ts"],
-      "@polyloom/vue/button": ["../../packages/vue/src/button/index.ts"]
-    }
+    "types": ["vitepress/client"]
   },
-  "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist"]
+  "include": [".vitepress/**/*.ts", ".vitepress/**/*.tsx", ".vitepress/**/*.vue", "src/**/*"],
+  "exclude": [".vitepress/cache", "dist", "node_modules"]
 }

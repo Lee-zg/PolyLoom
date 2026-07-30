@@ -3,6 +3,14 @@
 PolyLoom 首次公开发布：一个通过标准子路径按需消费的多框架 UI 组件与 JavaScript
 插件库。
 
+## VitePress 文档
+
+- 使用 VitePress 1.6.4 建立完整中文主站，以及英文 Overview、Quick Start 和导入速查。
+- 保留组件、插件与既有指南 URL，提供本地中文全文搜索、明暗主题、移动导航和键盘访问。
+- 为六包、Button、EmbedPdfVue 与 EventBus 补齐安装、API、SSR、无障碍、安全、性能和
+  故障排查。
+- 文档不加载外部字体、分析脚本或第三方 CDN；PDF 示例使用仓库自有 fixture 和本地 WASM。
+
 ## 包清单
 
 - `@polyloom/core@0.1.0`

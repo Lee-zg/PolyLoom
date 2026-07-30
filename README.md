@@ -14,6 +14,14 @@ JavaScript 插件分别发布，同时通过聚合包提供完整目录视图。
 首版提供 Vue/React Button、类型安全 EventBus，以及从历史项目重构而来的
 `EmbedPdfVue` PDF 工作台。
 
+## 文档
+
+- [中文项目介绍](https://lee-zg.github.io/PolyLoom/guides/getting-started/)
+- [五分钟快速开始](https://lee-zg.github.io/PolyLoom/guides/quick-start/)
+- [导入矩阵](https://lee-zg.github.io/PolyLoom/guides/imports/)
+- [包总览](https://lee-zg.github.io/PolyLoom/packages/overview/)
+- [English overview](https://lee-zg.github.io/PolyLoom/en/)
+
 ## 导入边界
 
 ```ts
@@ -99,6 +107,10 @@ can install one module or import one component without maintaining a package for
 
 Version 0.1.0 includes equivalent Vue 3 and React Button components, shared design tokens, a typed
 EventBus, and the SSR-safe `EmbedPdfVue` workbench with a native iframe fallback.
+
+[Overview](https://lee-zg.github.io/PolyLoom/en/) ·
+[Quick Start](https://lee-zg.github.io/PolyLoom/en/quick-start/) ·
+[Import Matrix](https://lee-zg.github.io/PolyLoom/en/imports/)
 
 ## License
 

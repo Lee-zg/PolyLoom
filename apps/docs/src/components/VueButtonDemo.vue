@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Button } from '@polyloom/vue/button';
 import { onMounted, ref } from 'vue';
-import '@polyloom/vue/button/style.css';
 
 const count = ref(0);
 const hydrated = ref(false);

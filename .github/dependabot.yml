@@ -23,5 +23,4 @@ updates:
           - vue
           - react
           - react-dom
-          - astro
-          - '@astrojs/*'
+          - vitepress

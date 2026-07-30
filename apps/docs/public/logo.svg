@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="PolyLoom">
+  <rect width="48" height="48" rx="10" fill="#1b1a17"/>
+  <path d="M10 13h28M10 24h28M10 35h28M13 10v28M24 10v28M35 10v28" stroke="#fff8eb" stroke-width="2" opacity=".86"/>
+  <path d="M10 24h28M24 10v28" stroke="#e39b37" stroke-width="4"/>
+  <circle cx="24" cy="24" r="4" fill="#fff8eb"/>
+</svg>
