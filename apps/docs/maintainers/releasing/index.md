@@ -44,9 +44,14 @@ pnpm test:e2e
 
 ## 0.1.0 首发
 
-首发要求维护者先创建 npm `@polyloom` 组织、启用 2FA，并把一次性细粒度 Token 直接保存
-到 GitHub `npm` Environment 的 `NPM_TOKEN_BOOTSTRAP`。Token 不得进入代码、日志或对话。
-手动触发 `release.yml` 并设置 `initial_release=true`。
+首发要求维护者先创建 npm `@polyloom` 组织、启用 2FA，并创建名为
+`polyloom-initial-release`、有效期 1 天的一次性细粒度 Token。Token 开启 bypass 2FA，
+`Packages and scopes` 使用 `Read and write / All Packages`，`Organizations` 使用
+`No access`。
+
+Token 直接保存到 GitHub `npm` Environment 的 `NPM_TOKEN_BOOTSTRAP`，不得进入代码、
+日志或对话。Environment 仅允许 `main` 部署并要求 `Lee-zg` 人工审批。手动触发
+`release.yml` 并设置 `initial_release=true`。
 
 ## Trusted Publishing
 
@@ -54,9 +59,11 @@ pnpm test:e2e
 
 - repository：`Lee-zg/PolyLoom`；
 - workflow：`release.yml`；
-- environment：`npm`。
+- environment：`npm`；
+- allowed actions：仅 `npm publish`。
 
-随后撤销一次性 Token、删除 Secret，并把仓库变量
+随后将六个包的 Publishing access 调整为“Require 2FA and disallow tokens”，撤销一次性
+Token、删除 Secret，并把仓库变量
 `NPM_TRUSTED_PUBLISHING_READY=true`。后续由 Changesets Action 通过 OIDC 发布，不保存
 长期 npm Token。
 
