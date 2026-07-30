@@ -89,6 +89,8 @@ jobs:
       - name: 运行浏览器测试
         run: pnpm test:e2e
         env:
+          # E2E 静态服务器挂载在根路径；Pages 的仓库前缀由 docs.yml 单独验证。
+          DOCS_BASE: /
           PLAYWRIGHT_BROWSER: ${{ matrix.browser }}
 
       - name: 上传失败报告

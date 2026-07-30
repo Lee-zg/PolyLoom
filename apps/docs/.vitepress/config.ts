@@ -18,7 +18,8 @@ function normalizeBase(rawBase: string | undefined) {
 const base = normalizeBase(
   process.env.DOCS_BASE ?? (process.env.GITHUB_ACTIONS ? DEFAULT_PRODUCTION_BASE : '/'),
 );
-const publicSiteBase = normalizeBase(process.env.DOCS_BASE ?? DEFAULT_PRODUCTION_BASE);
+// 资源挂载路径可为本地测试切换，但 canonical 与 sitemap 必须稳定指向正式站点。
+const publicSiteBase = normalizeBase(process.env.PUBLIC_SITE_BASE ?? DEFAULT_PRODUCTION_BASE);
 const siteUrl = new URL(publicSiteBase, `${SITE_ORIGIN.replace(/\/+$/, '')}/`).href;
 const repositoryUrl = 'https://github.com/Lee-zg/PolyLoom';
 
