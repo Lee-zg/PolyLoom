@@ -6,9 +6,15 @@ Publishing 发布。任何发布都必须从 `main` 的已验证提交产生。
 ## 首次发布 0.1.0
 
 1. 在 npm 创建 `polyloom` 组织，确认六个公开包名可用，并为账号启用 2FA。
-2. 创建仅允许发布六个包、可绕过发布 2FA 的一次性细粒度 Token。
+2. 创建名为 `polyloom-initial-release`、有效期 1 天的一次性细粒度 Token：
+   - 开启 `Bypass two-factor authentication`；
+   - `Packages and scopes` 设为 `Read and write / All Packages`，覆盖尚未创建的 scoped
+     包及无作用域聚合包；
+   - `Organizations` 设为 `No access`；
+   - 不限制 GitHub Actions 的动态出口 IP。
 3. 在 GitHub 创建 `npm` Environment，把 Token 保存为
-   `NPM_TOKEN_BOOTSTRAP`；不要写入仓库、终端历史或任务对话。
+   `NPM_TOKEN_BOOTSTRAP`；Environment 仅允许 `main` 部署，并要求 `Lee-zg` 人工审批。
+   不要把 Token 写入仓库、终端历史或任务对话。
 4. 合并功能 PR并确认 CI 与 Pages 成功后，手动运行“发布 npm 包”工作流，
    勾选 `initial_release`。
 5. 工作流会重复执行完整验收，发布六个 `0.1.0` 包，验证 provenance，再创建
@@ -24,12 +30,14 @@ Publishing 发布。任何发布都必须从 `main` 的已验证提交产生。
 - 仓库：`Lee-zg/PolyLoom`
 - Workflow：`release.yml`
 - Environment：`npm`
+- Allowed actions：仅 `npm publish`
 
 确认所有包配置完成后：
 
-1. 立即撤销一次性 npm Token。
-2. 删除 GitHub `npm` Environment 中的 `NPM_TOKEN_BOOTSTRAP`。
-3. 创建仓库变量 `NPM_TRUSTED_PUBLISHING_READY=true`。
+1. 将六个包的 Publishing access 调整为“Require 2FA and disallow tokens”。
+2. 立即撤销一次性 npm Token。
+3. 删除 GitHub `npm` Environment 中的 `NPM_TOKEN_BOOTSTRAP`。
+4. 创建仓库变量 `NPM_TRUSTED_PUBLISHING_READY=true`。
 
 此后合并带 Changeset 的变更时，工作流会创建版本 PR；版本 PR 合并后仅发布受影响
 的包，并由 GitHub OIDC 生成 npm provenance。

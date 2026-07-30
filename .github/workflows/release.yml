@@ -86,11 +86,28 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 24
-          cache: pnpm
           registry-url: https://registry.npmjs.org
 
       - name: 安装依赖
         run: pnpm install --frozen-lockfile
+
+      - name: 校验发布运行时
+        shell: bash
+        run: |
+          node_version="$(node --version | sed 's/^v//')"
+          npm_version="$(npm --version)"
+          version_at_least() {
+            [ "$(printf '%s\n' "$1" "$2" | sort -V | head -n 1)" = "$1" ]
+          }
+          version_at_least '22.14.0' "$node_version" || {
+            echo "::error::Node.js $node_version 低于发布要求 22.14.0。"
+            exit 1
+          }
+          version_at_least '11.5.1' "$npm_version" || {
+            echo "::error::npm $npm_version 低于 Trusted Publishing 要求 11.5.1。"
+            exit 1
+          }
+          echo "发布运行时：Node.js $node_version，npm $npm_version"
 
       - name: 检查首发凭证
         shell: bash
@@ -99,6 +116,63 @@ jobs:
             echo "::error::npm Environment 缺少 NPM_TOKEN_BOOTSTRAP，已停止首发。"
             exit 1
           fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN_BOOTSTRAP }}
+
+      - name: 检查首发身份与包名
+        shell: bash
+        run: |
+          publisher="$(npm whoami)"
+          packages=(
+            '@polyloom/core'
+            '@polyloom/theme'
+            '@polyloom/plugins'
+            '@polyloom/vue'
+            '@polyloom/react'
+            'polyloom'
+          )
+          error_log="$(mktemp)"
+          trap 'rm -f "$error_log"' EXIT
+
+          for package in "${packages[@]}"; do
+            if version="$(npm view "$package" version 2>"$error_log")"; then
+              if [ "$version" != '0.1.0' ]; then
+                echo "::error::$package 已存在非预期版本 $version，已停止首发。"
+                exit 1
+              fi
+
+              repository="$(npm view "$package" repository.url)"
+              case "$repository" in
+                'git+https://github.com/Lee-zg/PolyLoom.git'|'https://github.com/Lee-zg/PolyLoom.git')
+                  ;;
+                *)
+                  echo "::error::$package 0.1.0 的仓库来源不属于 Lee-zg/PolyLoom。"
+                  exit 1
+                  ;;
+              esac
+
+              maintainers="$(npm view "$package" maintainers --json)"
+              node -e '
+                const value = JSON.parse(process.argv[1]);
+                const maintainers = Array.isArray(value) ? value : [value];
+                if (!maintainers.some(({ name }) => name === process.argv[2])) process.exit(1);
+              ' "$maintainers" "$publisher" || {
+                echo "::error::$package 0.1.0 不属于当前 npm 身份 $publisher。"
+                exit 1
+              }
+              echo "$package 0.1.0 已由当前身份发布，将按幂等流程复核。"
+              continue
+            fi
+
+            if grep -Eq 'E404|404 Not Found' "$error_log"; then
+              echo "$package 尚未发布，可以首发。"
+              continue
+            fi
+
+            cat "$error_log"
+            echo "::error::无法确认 $package 的 registry 状态，已停止首发。"
+            exit 1
+          done
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN_BOOTSTRAP }}
 
@@ -198,11 +272,28 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 24
-          cache: pnpm
           registry-url: https://registry.npmjs.org
 
       - name: 安装依赖
         run: pnpm install --frozen-lockfile
+
+      - name: 校验发布运行时
+        shell: bash
+        run: |
+          node_version="$(node --version | sed 's/^v//')"
+          npm_version="$(npm --version)"
+          version_at_least() {
+            [ "$(printf '%s\n' "$1" "$2" | sort -V | head -n 1)" = "$1" ]
+          }
+          version_at_least '22.14.0' "$node_version" || {
+            echo "::error::Node.js $node_version 低于发布要求 22.14.0。"
+            exit 1
+          }
+          version_at_least '11.5.1' "$npm_version" || {
+            echo "::error::npm $npm_version 低于 Trusted Publishing 要求 11.5.1。"
+            exit 1
+          }
+          echo "发布运行时：Node.js $node_version，npm $npm_version"
 
       - name: 创建版本 PR 或通过 OIDC 发布
         uses: changesets/action@v1
