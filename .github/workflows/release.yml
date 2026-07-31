@@ -61,7 +61,8 @@ jobs:
           pnpm docs:build
           pnpm test:e2e
         env:
-          DOCS_BASE: /${{ github.event.repository.name }}
+          # E2E 静态服务器挂载在根路径；Pages 的仓库前缀由 docs.yml 单独构建和验证。
+          DOCS_BASE: /
           PLAYWRIGHT_BROWSER: all
           SITE_URL: https://${{ github.repository_owner }}.github.io
 
