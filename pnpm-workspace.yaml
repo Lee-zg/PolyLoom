@@ -10,13 +10,13 @@ allowBuilds:
 catalog:
   '@types/react': ^19.2.14
   '@types/react-dom': ^19.2.3
-  '@vitejs/plugin-react': ^6.0.4
+  '@vitejs/plugin-react': ^6.0.5
   '@vitejs/plugin-vue': ^6.0.8
   '@vue/server-renderer': ^3.5.40
   react: ^19.2.8
   react-dom: ^19.2.8
-  typescript: 6.0.3
-  vite: ^8.1.5
+  typescript: 7.0.2
+  vite: ^8.2.0
   vue: ^3.5.40
   vue-tsc: ^3.2.4
 
