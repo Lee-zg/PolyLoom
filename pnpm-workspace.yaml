@@ -10,7 +10,7 @@ allowBuilds:
 catalog:
   '@types/react': ^19.2.14
   '@types/react-dom': ^19.2.3
-  '@vitejs/plugin-react': ^6.0.4
+  '@vitejs/plugin-react': ^6.1.1
   '@vitejs/plugin-vue': ^6.0.8
   '@vue/server-renderer': ^3.5.40
   react: ^19.2.8
